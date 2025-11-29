@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.ts",
+  "type": "module",
   "scripts": {
     "start:dev": "tsx watch src/server.ts"
   },
@@ -11,6 +12,8 @@
   "license": "ISC",
   "packageManager": "pnpm@10.17.0",
   "dependencies": {
+    "@prisma/adapter-pg": "^7.0.1",
+    "@prisma/client": "^7.0.1",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
@@ -24,6 +27,8 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.5",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^24.10.1",
+    "prisma": "^7.0.1",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   }

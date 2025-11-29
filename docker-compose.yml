@@ -1,0 +1,38 @@
+services:
+  postgres:
+    container_name: auth-opt-jwt-pg
+    image: postgres:16-alpine
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    env_file:
+      - .env
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - auth-opt-jwt
+
+  api:
+    container_name: auth-opt-jwt-api
+    build:
+      context: .
+    ports:
+      - ${PORT}:${PORT}
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - auth-opt-jwt
+
+networks:
+  auth-opt-jwt:
+    driver: bridge
+
+volumes:
+  pg_data:
