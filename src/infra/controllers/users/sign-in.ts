@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { Request, Response } from 'express'
 import { SignInUseCase } from '@/use-cases/sign-in'
+import { MailTrapProvider } from '@/email/providers/mailtrap'
 
 const signInSchema = z.object({
   email: z.email(),
@@ -12,7 +13,8 @@ export class SignInController {
   async handle(request: Request, response: Response): Promise<Response> {
     const { email } = signInSchema.parse(request.body)
 
-    const signInUseCase = new SignInUseCase()
+    const mailProvider = new MailTrapProvider()
+    const signInUseCase = new SignInUseCase(mailProvider)
 
     await signInUseCase.execute({ email })
 
