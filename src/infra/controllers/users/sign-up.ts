@@ -19,6 +19,6 @@ export class SignUpController {
 
     const user = await signInUseCase.execute({ name, email })
 
-    return response.status(200).json(user)
+    return response.status(201).json(user)
   }
 }

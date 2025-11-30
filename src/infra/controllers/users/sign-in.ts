@@ -16,8 +16,8 @@ export class SignInController {
     const mailProvider = new MailTrapProvider()
     const signInUseCase = new SignInUseCase(mailProvider)
 
-    await signInUseCase.execute({ email })
+    const otpId = await signInUseCase.execute({ email })
 
-    return response.status(200).send()
+    return response.status(200).json(otpId)
   }
 }

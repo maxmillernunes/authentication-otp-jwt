@@ -1,14 +1,21 @@
 import type { EmailProvider } from '@/email/email'
 import { prisma } from '@/lib/prisma'
+import type { Otp } from '@/prisma-client'
 
 interface SignInUseCaseRequest {
   email: string
 }
 
+interface SignInUseCaseResponse {
+  otpId: string
+}
+
 export class SignInUseCase {
   constructor(private emailProvider: EmailProvider) {}
 
-  async execute({ email }: SignInUseCaseRequest): Promise<void> {
+  async execute({
+    email,
+  }: SignInUseCaseRequest): Promise<SignInUseCaseResponse> {
     const user = await prisma.user.findUnique({
       where: {
         email,
@@ -24,7 +31,7 @@ export class SignInUseCase {
     const expiresAt = new Date()
     expiresAt.setMinutes(expiresAt.getMinutes() + 30)
 
-    await prisma.otp.create({
+    const otp = await prisma.otp.create({
       data: {
         code,
         expiresAt,
@@ -40,6 +47,8 @@ export class SignInUseCase {
       subject: 'Your sign-in code',
       body: `<p>Your sign-in code is: <strong>${code}</strong></p>`,
     })
+
+    return { otpId: otp.id }
   }
 
   private generateCode(): string {
