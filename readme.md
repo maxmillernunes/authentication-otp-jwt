@@ -86,6 +86,13 @@ Projeto que implementa um fluxo de autenticação por OTP (one-time password) en
   - Resposta: 200 + { token: string, user: User }
   - Controller: [src/infra/controllers/users/validate-otp.ts](src/infra/controllers/users/validate-otp.ts)
   - Geração do JWT: [`JWTProvider`](src/auth/provider/jwt.ts) — expira em 1 hora
+- Profile (rota para testar o token)
+  - get /profile
+  - Header: {authorization: bearer token}
+  - Resposta: 200 + { user: User }
+  - Controller: [src/infra/controllers/users/profile.ts](src/infra/controllers/users/profile.ts)
+  - Verificação do jwt: [src/infra/middlewares/ensure-authenticate.ts](src/infra/middlewares/ensure-authenticate.ts)
+  
 
 ## Exemplos (curl)
 - Sign-up
